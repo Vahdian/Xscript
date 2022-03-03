@@ -14,9 +14,25 @@ window.onload =  function() {
 
     //functions
 
-    const connect = () => {
+    const connect = async () => {
         if(window.ethereum){
-            window.ethereum.enable()
+            try{
+            await window.ethereum.request({method: 'eth_requestAccounts'})
+
+            web3 = new Web3(window.ethereum)
+
+            let accounts = await web3.eth.getAccounts()
+
+            from = accounts[0]
+
+            console.log(accounts)
+
+            content.style.display = "initial"
+            connectButton.style.display = "none"
+            account.innerText = from
+        } catch(err) {
+            alert("Has rechazado la conexion a metamask")
+        }
         } else {
             alert("NECESITAS UN PROVEEDOR")
         }
